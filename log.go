@@ -31,12 +31,31 @@ func NewZero(w io.Writer) *Zero {
 		Logger: zerolog.New(w),
 	}
 }
-func (z Zero) Debug(v ...interface{}) { z.Logger.Debug().Msg(fmt.Sprintln(v...)) }
-func (z Zero) Info(v ...interface{})  { z.Logger.Info().Msg(fmt.Sprintln(v...)) }
-func (z Zero) Log(v ...interface{})   { z.Logger.Log().Msg(fmt.Sprintln(v...)) }
-func (z Zero) Warn(v ...interface{})  { z.Logger.Warn().Msg(fmt.Sprintln(v...)) }
-func (z Zero) Error(v ...interface{}) { z.Logger.Error().Msg(fmt.Sprintln(v...)) }
-func (z Zero) Fatal(v ...interface{}) { z.Logger.Fatal().Msg(fmt.Sprintln(v...)); stdlog.Fatal() }
+func (z Zero) Debug(v ...interface{}) {
+	msg := fmt.Sprintln(v...)
+	z.Logger.Debug().Msg(msg[0 : len(msg)-1])
+}
+func (z Zero) Info(v ...interface{}) {
+	msg := fmt.Sprintln(v...)
+	z.Logger.Info().Msg(msg[0 : len(msg)-1])
+}
+func (z Zero) Log(v ...interface{}) {
+	msg := fmt.Sprintln(v...)
+	z.Logger.Log().Msg(msg[0 : len(msg)-1])
+}
+func (z Zero) Warn(v ...interface{}) {
+	msg := fmt.Sprintln(v...)
+	z.Logger.Warn().Msg(msg[0 : len(msg)-1])
+}
+func (z Zero) Error(v ...interface{}) {
+	msg := fmt.Sprintln(v...)
+	z.Logger.Error().Msg(msg[0 : len(msg)-1])
+}
+func (z Zero) Fatal(v ...interface{}) {
+	msg := fmt.Sprintln(v...)
+	z.Logger.Fatal().Msg(msg[0 : len(msg)-1])
+	stdlog.Fatal()
+}
 
 // Std is a basic re-implementation of the standard library log to match the logging interface
 type Std struct{}
