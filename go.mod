@@ -1,4 +1,4 @@
-module go.ideatocode/log
+module go.ideatocode.tech/log
 
 go 1.17
 
