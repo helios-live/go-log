@@ -1,4 +1,4 @@
-module github.com/ideatocode/go-log
+module go.ideatocode/log
 
 go 1.17
 
