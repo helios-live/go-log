@@ -12,7 +12,7 @@ import (
 	"go.ideatocode.tech/log"
 )
 
-func TestZeroColorLogDefault(t *testing.T) {
+func TestColorLogDefault(t *testing.T) {
 	r, w := io.Pipe()
 
 	log.TimestampFunc = func() time.Time {
@@ -40,8 +40,37 @@ func TestZeroColorLogDefault(t *testing.T) {
 	assert.Equal(t, "2006-01-02 15:04:05+07:00 \x1b[94m[Info]\x1b[0m testing\n"+
 		"2006-01-02 15:04:05+07:00 \x1b[31m[Error]\x1b[0m testing\n", string(buf))
 }
+func TestNoLogDefault(t *testing.T) {
+	r, w := io.Pipe()
 
-func TestZeroStdLogDefault(t *testing.T) {
+	log.TimestampFunc = func() time.Time {
+		tm, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05+07:00")
+		return tm
+	}
+
+	log.DefaultLogger = log.NewColor(w)
+
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	var buf []byte
+	go func() {
+		buf, _ = ioutil.ReadAll(r)
+		// fmt.Fprintf(os.Stderr, string(buf))
+		wg.Done()
+	}()
+
+	log.Info("testing")
+	log.Error("testing")
+	w.Close()
+
+	wg.Wait()
+
+	assert.Equal(t, "2006-01-02 15:04:05+07:00 \x1b[94m[Info]\x1b[0m testing\n"+
+		"2006-01-02 15:04:05+07:00 \x1b[31m[Error]\x1b[0m testing\n", string(buf))
+}
+
+func TestStdLogDefault(t *testing.T) {
 	r, w := io.Pipe()
 
 	log.TimestampFunc = func() time.Time {

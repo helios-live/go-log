@@ -3,11 +3,11 @@ package log
 import (
 	"fmt"
 	"io"
+	"os"
 	"time"
 
 	stdlog "log"
 
-	"github.com/fatih/color"
 	"github.com/rs/zerolog"
 )
 
@@ -16,6 +16,9 @@ var TimeFormat = "2006-01-02 15:04:05Z07:00"
 
 // TimestampFunc is the default time func used by this package, useful for testing
 var TimestampFunc = time.Now
+
+// DefaultLogger is the logger called when using the default functions
+var DefaultLogger Logger
 
 // Logger is the bare minimum logging interface
 type Logger interface {
@@ -31,6 +34,29 @@ type Logger interface {
 type Zero struct {
 	zerolog.Logger
 	output io.Writer
+}
+
+func init() {
+	DefaultLogger = NewColor(os.Stdout)
+}
+
+func Debug(v ...interface{}) {
+	DefaultLogger.Debug(v...)
+}
+func Info(v ...interface{}) {
+	DefaultLogger.Info(v...)
+}
+func Log(v ...interface{}) {
+	DefaultLogger.Log(v...)
+}
+func Warn(v ...interface{}) {
+	DefaultLogger.Warn(v...)
+}
+func Error(v ...interface{}) {
+	DefaultLogger.Error(v...)
+}
+func Fatal(v ...interface{}) {
+	DefaultLogger.Fatal(v...)
 }
 
 // NewZero returns a new Zerolog logger
@@ -120,6 +146,7 @@ func (s Std) Error(v ...interface{}) {
 func (s Std) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Fatal]", fmt.Sprint(msg[0:len(msg)-1]))
+	stdlog.Fatal()
 }
 
 // NewColor returns a new Color logger
@@ -143,26 +170,26 @@ type Color struct {
 
 func (c Color) Debug(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println(color.GreenString("[Debug]"), fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[32m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Info(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println(color.HiBlueString("[Info]"), fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[94m[Info]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Log(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println(color.WhiteString("[Log]"), fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[37m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Warn(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println(color.YellowString("[Warn]"), fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[33m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Error(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println(color.RedString("[Error]"), fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[31m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println(color.HiRedString("[Fatal]"), fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[91m[Fatal]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 	stdlog.Fatal()
 }
