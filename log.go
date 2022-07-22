@@ -170,7 +170,7 @@ type Color struct {
 
 func (c Color) Debug(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println("\x1b[32m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[32m[Debug]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Info(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
@@ -178,11 +178,11 @@ func (c Color) Info(v ...interface{}) {
 }
 func (c Color) Log(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println("\x1b[37m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[37m[Log]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Warn(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
-	c.Logger.Println("\x1b[33m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
+	c.Logger.Println("\x1b[33m[Warn]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
 func (c Color) Error(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
