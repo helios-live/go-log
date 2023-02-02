@@ -153,3 +153,32 @@ func TestZerologPretty(t *testing.T) {
 	assert.Equal(t, "\x1b[90m2006-01-02 15:04:05+07:00\x1b[0m \x1b[32mINF\x1b[0m testing\n"+
 		"\x1b[90m2006-01-02 15:04:05+07:00\x1b[0m \x1b[33mDBG\x1b[0m testing\n", string(buf))
 }
+
+func TestFatal(t *testing.T) {
+	r, w := io.Pipe()
+
+	log.TimestampFunc = func() time.Time {
+		tm, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05+07:00")
+		return tm
+	}
+	x := log.NewColor(w)
+
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	var buf []byte
+	go func() {
+		buf, _ = ioutil.ReadAll(r)
+		// fmt.Fprintf(os.Stderr, string(buf))
+		wg.Done()
+	}()
+
+	assert.Panics(t, func() {
+		x.Fatal("testing")
+	})
+	w.Close()
+
+	wg.Wait()
+
+	assert.Equal(t, "2006-01-02 15:04:05+07:00 \x1b[91m[Fatal]\x1b[0m testing\n", string(buf))
+}

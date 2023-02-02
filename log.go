@@ -94,7 +94,7 @@ func (z Zero) Error(v ...interface{}) {
 func (z Zero) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	z.Logger.Fatal().Msg(msg[0 : len(msg)-1])
-	stdlog.Fatal()
+	panic(msg[0 : len(msg)-1])
 }
 
 type std struct {
@@ -146,7 +146,7 @@ func (s Std) Error(v ...interface{}) {
 func (s Std) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Fatal]", fmt.Sprint(msg[0:len(msg)-1]))
-	stdlog.Fatal()
+	panic(msg[0 : len(msg)-1])
 }
 
 // NewColor returns a new Color logger
@@ -191,5 +191,5 @@ func (c Color) Error(v ...interface{}) {
 func (c Color) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[91m[Fatal]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
-	stdlog.Fatal()
+	panic(msg[0 : len(msg)-1])
 }
