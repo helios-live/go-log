@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ideatocode/go-log"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
-	"go.ideatocode.tech/log"
 )
 
 func TestColorLogDefault(t *testing.T) {
@@ -150,8 +150,7 @@ func TestZerologPretty(t *testing.T) {
 
 	wg.Wait()
 
-	assert.Equal(t, "\x1b[90m2006-01-02 15:04:05+07:00\x1b[0m \x1b[32mINF\x1b[0m testing\n"+
-		"\x1b[90m2006-01-02 15:04:05+07:00\x1b[0m \x1b[33mDBG\x1b[0m testing\n", string(buf))
+	assert.Equal(t, "\x1b[90m2006-01-02 10:04:05+02:00\x1b[0m \x1b[32mINF\x1b[0m \x1b[1mtesting\x1b[0m\n\x1b[90m2006-01-02 10:04:05+02:00\x1b[0m DBG testing\n", string(buf))
 }
 
 func TestFatal(t *testing.T) {
