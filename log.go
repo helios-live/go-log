@@ -28,6 +28,7 @@ type Logger interface {
 	Warn(v ...interface{})
 	Error(v ...interface{})
 	Fatal(v ...interface{})
+	GetStdLogger() *stdlog.Logger
 }
 
 // Zero is a basic re-implementation of zerolog to match the logging interface
@@ -97,6 +98,10 @@ func (z *Zero) Fatal(v ...interface{}) {
 	panic(msg[0 : len(msg)-1])
 }
 
+func (z *Zero) GetStdLogger() *stdlog.Logger {
+	return stdlog.New(z.output, "", 0)
+}
+
 type std struct {
 	tf     func() time.Time
 	output io.Writer
@@ -109,7 +114,7 @@ func (s std) Write(bytes []byte) (int, error) {
 // Std is a basic re-implementation of the standard library log to match the logging interface
 type Std struct {
 	output io.Writer
-	Logger stdlog.Logger
+	Logger *stdlog.Logger
 }
 
 // NewStd Returns a new Zerolog logger
@@ -120,7 +125,7 @@ func NewStd(w io.Writer) *Std {
 	}
 	return &Std{
 		output: s,
-		Logger: *stdlog.New(s, "", 0),
+		Logger: stdlog.New(s, "", 0),
 	}
 }
 func (s *Std) Debug(v ...interface{}) {
@@ -147,6 +152,9 @@ func (s *Std) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Fatal]", fmt.Sprint(msg[0:len(msg)-1]))
 	panic(msg[0 : len(msg)-1])
+}
+func (s *Std) GetStdLogger() *stdlog.Logger {
+	return s.Logger
 }
 
 // NewColor returns a new Color logger
@@ -192,4 +200,7 @@ func (c *Color) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[91m[Fatal]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 	panic(msg[0 : len(msg)-1])
+}
+func (c *Color) GetStdLogger() *stdlog.Logger {
+	return stdlog.New(c.output, "", 0)
 }

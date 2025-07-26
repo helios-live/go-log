@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ideatocode/go-log"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
+	"go.ideatocode.tech/log"
 )
 
 func TestColorLogDefault(t *testing.T) {
