@@ -67,31 +67,31 @@ func NewZero(w io.Writer) *Zero {
 		output: w,
 	}
 }
-func (z Zero) Pretty() *Zero {
+func (z *Zero) Pretty() *Zero {
 	z.Logger = z.Logger.Output(zerolog.ConsoleWriter{Out: z.output, TimeFormat: TimeFormat})
-	return &z
+	return z
 }
-func (z Zero) Debug(v ...interface{}) {
+func (z *Zero) Debug(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	z.Logger.Debug().Msg(msg[0 : len(msg)-1])
 }
-func (z Zero) Info(v ...interface{}) {
+func (z *Zero) Info(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	z.Logger.Info().Msg(msg[0 : len(msg)-1])
 }
-func (z Zero) Log(v ...interface{}) {
+func (z *Zero) Log(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	z.Logger.Log().Msg(msg[0 : len(msg)-1])
 }
-func (z Zero) Warn(v ...interface{}) {
+func (z *Zero) Warn(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	z.Logger.Warn().Msg(msg[0 : len(msg)-1])
 }
-func (z Zero) Error(v ...interface{}) {
+func (z *Zero) Error(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	z.Logger.Error().Msg(msg[0 : len(msg)-1])
 }
-func (z Zero) Fatal(v ...interface{}) {
+func (z *Zero) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	z.Logger.Fatal().Msg(msg[0 : len(msg)-1])
 	panic(msg[0 : len(msg)-1])
@@ -123,27 +123,27 @@ func NewStd(w io.Writer) *Std {
 		Logger: *stdlog.New(s, "", 0),
 	}
 }
-func (s Std) Debug(v ...interface{}) {
+func (s *Std) Debug(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Debug]", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (s Std) Info(v ...interface{}) {
+func (s *Std) Info(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Info]", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (s Std) Log(v ...interface{}) {
+func (s *Std) Log(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Log]", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (s Std) Warn(v ...interface{}) {
+func (s *Std) Warn(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Warn]", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (s Std) Error(v ...interface{}) {
+func (s *Std) Error(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Error]", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (s Std) Fatal(v ...interface{}) {
+func (s *Std) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	s.Logger.Println("[Fatal]", fmt.Sprint(msg[0:len(msg)-1]))
 	panic(msg[0 : len(msg)-1])
@@ -168,27 +168,27 @@ type Color struct {
 	Logger stdlog.Logger
 }
 
-func (c Color) Debug(v ...interface{}) {
+func (c *Color) Debug(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[32m[Debug]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (c Color) Info(v ...interface{}) {
+func (c *Color) Info(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[94m[Info]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (c Color) Log(v ...interface{}) {
+func (c *Color) Log(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[37m[Log]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (c Color) Warn(v ...interface{}) {
+func (c *Color) Warn(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[33m[Warn]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (c Color) Error(v ...interface{}) {
+func (c *Color) Error(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[31m[Error]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 }
-func (c Color) Fatal(v ...interface{}) {
+func (c *Color) Fatal(v ...interface{}) {
 	msg := fmt.Sprintln(v...)
 	c.Logger.Println("\x1b[91m[Fatal]\x1b[0m", fmt.Sprint(msg[0:len(msg)-1]))
 	panic(msg[0 : len(msg)-1])
