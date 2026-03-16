@@ -9,7 +9,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
-	"go.ideatocode.tech/log"
+	"github.com/helios-live/go-log/v2"
 )
 
 func TestColorLogDefault(t *testing.T) {
