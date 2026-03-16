@@ -1,4 +1,4 @@
-module go.ideatocode.tech/log
+module github.com/helios-live/go-log/v2
 
 go 1.23.0
 
